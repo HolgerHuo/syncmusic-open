@@ -1,0 +1,351 @@
+<!--
+    __________    ____                   __  __           _      
+   |  _____   |  / ___| _   _ _ __   ___|  \/  |_   _ ___(_) ___ 
+   |  |    |  |  \___ \| | | | '_ \ / __| |\/| | | | / __| |/ __|
+   |  |    |  |   ___) | |_| | | | | (__| |  | | |_| \__ \ | (__ 
+  /   |   /   |  |____/ \__, |_| |_|\___|_|  |_|\__,_|___/_|\___|
+ |___/   |___/          |___/                                    
+
+ 此项目使用 GPL v3 协议开放源代码，您可以在遵守本协议的前提下自由修改使用
+
+ 作者：Akkariin Meiko | QQ：204034 | Telegram：Akkariins
+
+ 前端由Holger Huo修改
+
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport"
+		content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.7, height=device-height" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-touch-fullscreen" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="white" />
+	<meta name="full-screen" content="yes" />
+	<meta name="browsermode" content="application" />
+	<meta name="x5-fullscreen" content="true" />
+	<meta name="x5-page-mode" content="app" />
+	<title>669点歌台</title>
+	<meta name="author" content="拾吾,拾玖" />
+	<meta name="description" content="669电台全新项目：点歌台~ 在线互动，为你心中的ta点上一首专属于ta自己的歌！超全曲库任你选！" />
+	<meta name="keywords" content="radio,music,music radio,音乐电台,点歌台" />
+	<meta property="og:url" content="https://radio.dragon-fly.club/" />
+	<meta property="og:title" content="669点歌台" />
+	<meta property="og:image" content="/static/images/icon-128x128.png" />
+	<meta property="og:description" content="669电台全新项目：点歌台~ 在线互动，为你心中的ta点上一首专属于ta自己的歌！超全曲库任你选！" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="669点歌台" />
+	<meta name="twitter:image" content="/static/images/avatar.png" />
+	<meta name="twitter:description" content="669电台全新项目：点歌台~ 在线互动，为你心中的ta点上一首专属于ta自己的歌！超全曲库任你选！" />
+	<meta name="apple-mobile-web-app-title" content="Radio 669">
+	<!--<meta id="i18n_pagename" content="i18n">-->
+	<link rel="icon" href="/static/images/avatar.png" />
+	<link rel="apple-touch-icon-precomposed" href="/static/images/apple-touch-icon.png" />
+	<link rel="apple-touch-icon" href="/static/images/apple-touch-icon.png" />
+	<link rel="shortcut icon" href="/static/images/avatar.png" />
+	<link rel="manifest" href="/manifest.json" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/materialize-css@1.0.0/dist/css/materialize.min.css">
+	<link rel="stylesheet" href="/static/css/style.css" />
+	<link id="dark-theme" rel="stylesheet" href="/static/css/night.css" media="(prefers-color-scheme: dark)"
+		data-original-media="(prefers-color-scheme: dark)" />
+	<link id="daily-theme" rel="stylesheet" href="/static/css/style.css"
+		media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
+		data-original-media="(prefers-color-scheme: no-preference), (prefers-color-scheme: light)" />
+	<script async src="/static/js/theme_auto.js"></script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-MG8HKG9S14"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'G-MG8HKG9S14');
+	</script>
+	<script>
+		var _hmt = _hmt || [];
+		(function () {
+			var hm = document.createElement("script");
+			hm.src = "https://hm.baidu.com/hm.js?4e70c2dd28c4f22d00f6ddb3ae5873b5";
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+</head>
+
+<body class="blue-grey darken-4 white-text" onclick="checkElement(event)">
+	<div id="blur-img" style="opacity: 1;">
+		<svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="blurred_flv8ppoyf" class="blured-img"
+			viewBox="0 0 2304 978" preserveAspectRatio="none">
+			<filter id="blur_flv8ppoyf">
+				<feGaussianBlur in="SourceGraphic" stdDeviation="50"></feGaussianBlur>
+			</filter>
+			<image x="0" y="0" externalResourcesRequired="true" xlink:href="" id="blurimgsrc"
+				style="filter:url(#blur_flv8ppoyf)" preserveAspectRatio="none"></image>
+		</svg>
+		<div class="blur-mask" style="display: block;"></div>
+	</div>
+	<div id="welcome"
+		style="position: fixed;width: 100%;height: 100%;top: 0px;left: 0px;z-index: 9999999;background: #263238;">
+		<span class="fa-stack fa-lg"
+			style="font-size: 64px;position: fixed;top: calc(50% - 64px);left: calc(50% - 64px);cursor:pointer;"
+			onclick="connect();$(welcome).fadeOut();">
+			<i class="fa fa-circle fa-stack-2x" style="color:#009688 !important;"></i>
+			<i class="fa fa-play fa-stack-1x fa-inverse" style="position: relative;left: 6px;"></i>
+		</span>
+	</div>
+	<nav class="topbar-fixed">
+		<div class="nav-wrapper teal">
+			<ul id="nav-mobile" class="left">
+				<li><a href="#" data-target="slide-out" class="sidenav-trigger waves-effect"
+						style="display: inline-block;"><i class="material-icons">menu</i></a></li>
+				<li><a href="#" class="logo-text waves-effect" style="top:2px">669点歌台</a></li>
+			</ul>
+		</div>
+	</nav>
+	<ul id="slide-out" class="sidenav">
+		<li>
+			<div class="user-view">
+				<div class="background">
+					<div class="background-black"></div>
+					<img style="width:100%;height:100%"
+						src="https://cdn.jsdelivr.net/gh/holgerhuo/cdn/picgo/20201230212923.png">
+				</div>
+				<a href="#"><img class="circle"
+						src="https://cdn.jsdelivr.net/gh/holgerhuo/cdn/picgo/20201230212449.jpg"></a>
+				<a href="#"><span class="white-text name">669点歌台</span></a>
+				<a href="#"><span class="white-text email">Radio 669</span></a>
+			</div>
+		</li>
+		<!--<li><a class="waves-effect" href="https://tql.ink/" target="_blank">个人博客</a></li>
+		<li><a class="waves-effect" href="https://t.me/Akkariins" target="_blank">Telegram</a></li>
+		<li>
+			<div class="divider"></div>
+		</li>-->
+		<li><a class="subheader">关注我们</a></li>
+		<li><a class="waves-effect" href="https://radio.holger.net.cn" target="_blank">669音乐台</a></li>
+		<li><a class="waves-effect" href="https://open.weixin.qq.com/qr/code?username=radio_669"
+				target="_blank">微信公众号</a></li>
+		<!--<li><a class="waves-effect" href="https://github.com/KasuganoSoras" target="_blank">GitHub</a></li>-->
+		<li><a class="subheader">致谢</a></li>
+		<!--<li><a class="waves-effect" href="https://www.v2ex.com/t/617224" target="_blank">V2EX</a></li>-->
+		<li><a class="waves-effect" href="https://github.com/kasuganosoras/SyncMusic" target="_blank"
+				rel="nofollow">SyncMusic</a></li>
+	</ul>
+	<div class="container">
+		<div class="row">
+			<div class="col s12 m8">
+				<div class="col s12 m4">
+					<img src="" id="musicpic" title="静音/取消静音" onclick="setPause()"
+						style="cursor:pointer;transition-duration:0.2s;display:none;width: 90%;padding: 4px;border: 32px solid #151515;border-radius: 50%;background: rgb(191, 20, 20);margin-top: 5%;margin-left:5%;box-shadow:0px 0px 8px #000;"
+						onerror="this.style.display='none'" />
+				</div>
+				<div class="col s12 m8">
+					<h5>当前播放</h5>
+					<p id="musicname">Loading...</p>
+					<br>
+					<h5>歌词</h5>
+					<p id="musiclrc">Loading...</p>
+					<p><small id="usedtime">00:00:00</small><small id="endtime" class="right-align"
+							style="display: block;margin-top: -18px;">00:00:00</small></p>
+					<div class="progress">
+						<div class="determinate" id="played" style="width: 0%"></div>
+					</div>
+					<p style="text-align:right;cursor:pointer;">
+						<span
+							onclick="if(volrange.style.display=='none'){$(volrange).fadeIn();}else{$(volrange).fadeOut();}">音量</span>&nbsp;&nbsp;&nbsp;
+						<input type="range" value="1" min="0" max="1" step="0.01" id="volrange"
+							style="display:none;transition-duration: 0.2s;border: 0px;width: 30%;position: relative;top: -4px;"
+							onmousemove="musicControl.volume=this.value"
+							onchange="localStorage.setItem('volume', this.value)" />
+					</p>
+				</div>
+				<div class="col s12 m12" id="playlist">
+					<br>
+					<h5>已点歌曲</h5>
+					<p>以下为等待播放的歌曲</p>
+					<div style="overflow: auto;max-height:512px;">
+						<table class="table responsive-table" id="musicList"></table>
+					</div>
+					<audio src="" id="musicControl" style="width: 0px;height: 0px;opacity: 0;" autoplay>
+				</div>
+			</div>
+			<div class="col s12 m4 livechat">
+				<script>
+					function display(id) {
+						var t = document.getElementById(id);
+						if (t.style.display === 'none') {
+							t.style.display = 'block';
+						} else {
+							t.style.display = 'none';
+						}
+					}
+				</script>
+				<h5>实时聊天</h5>
+				<p>当前一共在线 <online id="online-user">0</online> 人</p>
+				<div id="chatdata"><button onclick="connect()" class="btn btn-primary">连接服务器</button></div>
+				<div class="input-group">
+					<input type="text" id="msginput" class="form-control input white-text" placeholder="消息内容"></input>
+					<span class="input-group-btn">
+						<button onclick="sendmsg()" id="sendmsgbtn" class="btn btn-primary full-width">发送</button>
+					</span>
+				</div>
+				<p class="actionInput" style="text-align:center">
+					<a onclick="display('manual');">[使用方法]</a>&nbsp;&nbsp;
+					<a onclick="msginput.value='投票切歌';sendmsg();">[投票切歌]</a>&nbsp;&nbsp;
+					<a onclick="checkInput();" id="opensearch">[搜索音乐]</a>
+				</p>
+				<div id="manual" style="display:none">
+					<p>输入 “点歌 歌名” 即可点歌。<br>例如输入：点歌 See You Again<br>支持输入网易云音乐 ID 来点歌<br>在输入框中输入歌曲名后点击搜索音乐即可搜索</p>
+					<p>遇到不好听的歌可以输入 “投票切歌”，当投票人数超过在线人数的 30% 时就会切歌。</p>
+					<p>点播过于难听的歌曲例如 LostRiver 等将会被管理员切歌或从播放列表删除。</p>
+					<p>输入 “设置昵称 名字” 即可设置自己的显示昵称，仅限当前客户端的 IP 地址有效。</p>
+				</div>
+				<iframe src="/search.php"
+					style="display: none;border: 0px;width: 100%;height: 512px;position: relative;top: -345px;background: #F1F1F1;border: 12px solid rgba(255,255,255,0.0);border-radius: 8px;box-shadow: 0px 0px 16px rgba(0,0,0,0.8);"
+					id="search"></iframe>
+				<!--<iframe src="/face.html?s=3"
+					style="display: none;border: 0px;width: 70vw;height: 70vh;position: fixed;top: 15vh;left: 15vw;background: #F1F1F1;border: 12px solid rgba(255,255,255,0.0);border-radius: 8px;box-shadow: 0px 0px 16px rgba(0,0,0,0.8);"
+					id="faces"></iframe>-->
+			</div>
+		</div>
+	</div>
+
+	<div style="display: none">
+		<a rel="me" href="https://mast.dragon-fly.club/@holgerhuo">Mastodon</a>
+		<a rel="me" href="https://mast.dragon-fly.club/@radio_669">Mastodon</a>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script>
+	<script>
+		if ('serviceWorker' in navigator) {
+			if (navigator.serviceWorker.controller) {
+				navigator.serviceWorker.addEventListener('controllerchange', function () {
+					showNotification()
+				})
+			}
+
+			window.addEventListener('load', function () {
+				navigator.serviceWorker.register('/sw.js')
+			})
+		}
+
+		function showNotification() {
+			var snackbarBg = "#49b1f5"
+			var snackbarPos = "bottom-left"
+			Snackbar.show({
+				text: 'Updated Successfully',
+				backgroundColor: snackbarBg,
+				duration: 500000,
+				pos: snackbarPos,
+				actionText: 'Click to Reload',
+				actionTextColor: '#fff',
+				onActionClick: function (e) {
+					location.reload()
+				},
+			})
+
+		}
+	</script>
+	</div>
+	<!--
+	<script src="https://cdn.jsdelivr.net/npm/jquery-i18n-properties@1.2.7/jquery.i18n.properties.js"></script>
+	<script>
+		var getCookie = function (name, value, options) {
+			if (typeof value != 'undefined') { // name and value given, set cookie
+				options = options || {};
+				if (value === null) {
+					value = '';
+					options.expires = -1;
+				}
+				var expires = '';
+				if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) {
+					var date;
+					if (typeof options.expires == 'number') {
+						date = new Date();
+						date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
+					} else {
+						date = options.expires;
+					}
+					expires = '; expires=' + date.toUTCString(); // use expires attribute, max-age is not supported by IE
+				}
+				var path = options.path ? '; path=' + options.path : '';
+				var domain = options.domain ? '; domain=' + options.domain : '';
+				var s = [cookie, expires, path, domain, secure].join('');
+				var secure = options.secure ? '; secure' : '';
+				var c = [name, '=', encodeURIComponent(value)].join('');
+				var cookie = [c, expires, path, domain, secure].join('')
+				document.cookie = cookie;
+			} else { // only name given, get cookie
+				var cookieValue = null;
+				if (document.cookie && document.cookie != '') {
+					var cookies = document.cookie.split(';');
+					for (var i = 0; i < cookies.length; i++) {
+						var cookie = jQuery.trim(cookies[i]);
+						// Does this cookie string begin with the name we want?
+						if (cookie.substring(0, name.length + 1) == (name + '=')) {
+							cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+							break;
+						}
+					}
+				}
+				return cookieValue;
+			}
+		};
+		var getNavLanguage = function () {
+			if (navigator.appName == "Netscape") {
+				var navLanguage = navigator.language;
+				return navLanguage.substr(0, 2);
+			}
+			return false;
+		}
+		var i18nLanguage = "zh-CN";
+
+		var webLanguage = ['zh-CN', 'zh-TW', 'en', 'en-US', 'en-GB', 'zh'];
+
+		var execI18n = function () {
+
+			var navLanguage = getNavLanguage();
+			if (navLanguage) {
+				var charSize = $.inArray(navLanguage, webLanguage);
+				if (charSize > -1) {
+					i18nLanguage = navLanguage;
+					getCookie("userLanguage", navLanguage);
+				};
+			} else {
+				console.log("not navigator");
+				return false;
+			}
+
+			jQuery.i18n.properties({
+				name: "i18n",
+				path: 'i18n/',
+				mode: 'map',
+				language: i18nLanguage,
+				callback: function () {
+					$("[data-locale]").each(function () {
+						//console.log($(this).data("locale"));  
+						$(this).html($.i18n.prop($(this).data("locale")));
+
+
+					});
+				}
+			});
+		}
+
+		execI18n();
+
+	</script>
+	-->
+	<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.jsdelivr.net/npm/materialize-css@1.0.0/dist/js/materialize.min.js"></script>
+	<script src="/static/js/app.js"></script>
+</body>
+
+</html>
