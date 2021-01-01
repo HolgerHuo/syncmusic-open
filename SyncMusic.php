@@ -106,11 +106,14 @@ class SyncMusic {
 				$server->started = true;
 			}
 			
-			// 获取客户端的 IP 地址
+			// 获取客户端ID
+			$clientIp = $request->server['query_string'];
+
+			
 			if($this->getIpMethod) {
-				$clientIp = $request->header['x-real-ip'] ?? "127.0.0.1";
+				$clientRealIp = $request->header['x-real-ip'] ?? "127.0.0.1";
 			} else {
-				$clientIp = $server->getClientInfo($request->fd)['remote_ip'] ?? "127.0.0.1";
+				$clientRealIp = $server->getClientInfo($request->fd)['remote_ip'] ?? "127.0.0.1";
 			}
 			
 			// 将客户端 IP 储存到表中
@@ -574,7 +577,7 @@ class SyncMusic {
 									$userNick = trim(mb_substr($json['data'], 5, 99999));
 									
 									// 正则判断用户名是否合法
-									if(preg_match("/^[\x{4e00}-\x{9fa5}A-Za-z0-9_]+[^_]{3,20}$/u", $userNick)) {
+									if(preg_match("/^[\x{4e00}-\x{9fa5}A-Za-z0-9_]+[^_]{1,20}$/u", $userNick)) {
 										if($this->isBlackList($userNick)) {
 											$server->push($frame->fd, json_encode([
 												"type" => "msg",
@@ -599,7 +602,7 @@ class SyncMusic {
 									} else {
 										$server->push($frame->fd, json_encode([
 											"type" => "msg",
-											"data" => "只允许中英文数字下划线，最少 4 个字"
+											"data" => "只允许中英文数字下划线，最少 2 个字"
 										]));
 									}
 									
@@ -703,7 +706,13 @@ class SyncMusic {
 		 *
 		 */
 		$this->server->on('close', function ($server, $fd) {
+			$clientIp = $this->getClientIp($fd);
+			if($this->isAdmin($clientIp)) {
+				@file_put_contents(ROOT . "/admin.ip", "");
+				$this->consoleLog("管理员 {$fd} 已登出", 1, true);
+			}
 			$this->consoleLog("客户端 {$fd} 已断开连接", 1, true);
+			
 		});
 		
 		/**

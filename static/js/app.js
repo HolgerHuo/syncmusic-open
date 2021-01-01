@@ -14,6 +14,24 @@
 	var last_input = "";
 	var inputGroupCss = "position: fixed;width:100%;bottom: 0px;left: 0px;padding-bottom:12px;padding-left: 12px;padding-right:12px;background:rgba(39,50,56,0.85);box-shadow: 0px 0px 8px rgba(0,0,0,0.5);";
 
+	function getRandIP() {
+		var ip = []
+		for (var i = 0; i < 4; i++) {
+			ip = ip + Math.floor(Math.random() * 256) + "."
+		}
+		return ip
+	}
+
+	var id = window.localStorage.getItem("id");
+	if (id != null && id != undefined) {
+		var id = id
+	}
+	else {
+		var id = getRandIP()
+		id = id.substr(0, id.length - 1);
+		window.localStorage.setItem("id", id);
+	}
+
 	// 搜索功能
 	function checkInput() {
 		var userInput = $("#msginput").val();
@@ -93,28 +111,28 @@
 		musicControl.src = data.file;
 		musicControl.pause();
 		musicname.innerHTML = music_title;
-        musicpic.src = data.image;
-        if ('mediaSession' in navigator) {
-            navigator.mediaSession.metadata = new MediaMetadata({
-                title: data.name,
-                artist: data.artists,
-                album: data.album,
-                artwork: [
-                    { src: musicpic.src, sizes: '300x300', type: 'image/png' },
-                ]
-            });
-            navigator.mediaSession.setActionHandler('play', function() {
-                // User clicked "Play" media notification icon.
-                // Do something more than just playing current audio...
-                setPause();
-            });
+		musicpic.src = data.image;
+		if ('mediaSession' in navigator) {
+			navigator.mediaSession.metadata = new MediaMetadata({
+				title: data.name,
+				artist: data.artists,
+				album: data.album,
+				artwork: [
+					{ src: musicpic.src, sizes: '300x300', type: 'image/png' },
+				]
+			});
+			navigator.mediaSession.setActionHandler('play', function () {
+				// User clicked "Play" media notification icon.
+				// Do something more than just playing current audio...
+				setPause();
+			});
 
-            navigator.mediaSession.setActionHandler('pause', function() {
-                // User clicked "Pause" media notification icon.
-                // Do something more than just pausing current audio...
-                setPause();
-            });
-        }
+			navigator.mediaSession.setActionHandler('pause', function () {
+				// User clicked "Pause" media notification icon.
+				// Do something more than just pausing current audio...
+				setPause();
+			});
+		}
 		rotate = 0;
 		$("#blurimgsrc").attr("xlink:href", data.image);
 		$(musicpic).fadeIn();
@@ -173,12 +191,13 @@
 			msginput.disabled = false;
 			sendmsgbtn.disabled = false;
 			$(msginput).focus();
-		}, 3000);
+		}, 100);
 	}
 
 	// 连接服务器
 	function connect() {
-		websocket = new WebSocket(ws_hostname);
+
+		websocket = new WebSocket(ws_hostname + "/?" + id);
 		websocket.onopen = function (event) {
 			$("#chatdata").html("");
 			ws_connected = true;
