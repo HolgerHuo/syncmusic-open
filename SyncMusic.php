@@ -79,6 +79,7 @@ class SyncMusic
 		$table->column('needswitch', swoole_table::TYPE_STRING, 32768);
 		$table->column('music_list', swoole_table::TYPE_STRING, 32768);
 		$table->column('music_show', swoole_table::TYPE_STRING, 32768);
+		$table->column('music_queue', swoole_table::TYPE_STRING, 32768);
 		$table->column('banned_ips', swoole_table::TYPE_STRING, 32768);
 		$table->create();
 
@@ -195,7 +196,7 @@ class SyncMusic
 							$lastChat = $this->getLastChat($frame->fd);
 
 							//防止客户端刷屏
-							if ($lastChat && time() - $lastChat <= MIN_CHATWAIT) {
+							if ($lastChat && $this->microtime_float() - $lastChat <= MIN_CHATWAIT) {
 								$server->push($frame->fd, json_encode([
 									"type" => "msg",
 									"data" => "发言太快，请稍后再发送"
@@ -203,7 +204,7 @@ class SyncMusic
 							} else {
 
 								// 储存用户的最后发言时间
-								$this->setLastChat($frame->fd, time());
+								$this->setLastChat($frame->fd, $this->microtime_float());
 								$this->consoleLog("客户端 {$frame->fd} 发送消息：{$json['data']}", 1, true);
 
 								if ($json['data'] == "切歌") {
@@ -616,10 +617,28 @@ class SyncMusic
 												"data" => "你已经点了很多歌了，请先听完再点"
 											]));
 										} elseif ($this->isLockedSearch()) {
-											$server->push($frame->fd, json_encode([
-												"type" => "msg",
-												"data" => "当前有任务正在执行，请稍后再试"
-											]));
+											//$server->push($frame->fd, json_encode([
+											//	"type" => "msg",
+											//	"data" => "当前有任务正在执行，请稍后再试"
+											//]));
+											$queueList = $this->getQueueList();
+											$queueList[] = ["id" => $frame->fd, "action" => "Search", "data" => $musicName];
+											$this->setQueueList($queueList);
+											$this->consoleLog("点歌已加入队列：{$musicName}", 1, true);
+											// 广播给所有客户端
+											$userNickName = $this->getUserNickname($clientIp);
+											foreach ($clients as $id) {
+												$showUserName = $this->getClientIp($id) == $adminIp ? $clientIp : $username;
+												if ($userNickName) {
+													$showUserName = "{$userNickName} ({$showUserName})";
+												}
+												$server->push($id, json_encode([
+													"type" => "chat",
+													"user" => htmlspecialchars($showUserName),
+													"time" => date("Y-m-d H:i:s"),
+													"data" => htmlspecialchars($json['data'])
+												]));
+											}
 										} else {
 											if (mb_strlen($json['data']) > MAX_CHATLENGTH) {
 												$server->push($frame->fd, json_encode([
@@ -840,6 +859,13 @@ class SyncMusic
 					"type" => "msg",
 					"data" => $data['data']
 				]));
+			}
+			$queue = $this->getQueueList();
+			if (count($queue)!=0) {
+				$server->task(["id" => $queue[0]['id'], "action" => "Search", "data" => $queue[0]['data']]);
+				unset($queue[0]);
+				$queue = array_values($queue);
+				$this->setQueueList($queue);
 			}
 		});
 	}
@@ -1137,6 +1163,12 @@ class SyncMusic
 		return $this->server->chats->get($id, "last") ?? 0;
 	}
 
+	private function microtime_float()
+	{
+		list($usec, $sec) = explode(" ", microtime());
+		return ((float)$usec + (float)$sec);
+	}
+
 	/**
 	 *
 	 *  GetMaskName 获取和谐过的客户端 IP 地址
@@ -1329,6 +1361,30 @@ EOF;
 			$sourceList = [];
 		}
 		return $sourceList;
+	}
+
+	/**
+	 *
+	 *  getQueueList 获取点歌排队列表
+	 *
+	 */
+	private function getQueueList()
+	{
+		if (USE_REDIS) {
+			$redis = new Redis();
+			$redis->connect(REDIS_HOST, REDIS_PORT);
+			if (!empty(REDIS_PASS)) {
+				$redis->auth(REDIS_PASS);
+			}
+			$data = $redis->get("syncmusic-queue");
+			$queueList = json_decode($data, true);
+		} else {
+			$queueList = json_decode($this->server->table->get(0, "music_queue"), true);
+		}
+		if (!$queueList || empty($queueList)) {
+			$queueList = array();
+		}
+		return $queueList;
 	}
 
 	/**
@@ -1569,6 +1625,25 @@ EOF;
 			$redis->set("syncmusic-show", json_encode($data));
 		} else {
 			$this->server->table->set(0, ["music_show" => json_encode($data)]);
+		}
+	}
+
+	/**
+	 *
+	 *  SetQueueList 设置点歌排队清单
+	 *
+	 */
+	private function setQueueList($data)
+	{
+		if (USE_REDIS) {
+			$redis = new Redis();
+			$redis->connect(REDIS_HOST, REDIS_PORT);
+			if (!empty(REDIS_PASS)) {
+				$redis->auth(REDIS_PASS);
+			}
+			$redis->set("syncmusic-queue", json_encode($data,JSON_UNESCAPED_SLASHES));
+		} else {
+			$this->server->table->set(0, ["music_queue" => json_encode($data,JSON_UNESCAPED_SLASHES)]);
 		}
 	}
 

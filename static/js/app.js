@@ -31,13 +31,36 @@ if (id != null && id != undefined) {
 }
 
 // 搜索功能
+
+var scrollHandlerSearch = function(){
+    searchScroll = $(search).fadeOut();
+    $(window).off("scroll", scrollHandlerSearch);
+}
+
 function checkInput() {
     var userInput = $("#msginput").val();
     userInput = userInput.replace(/点歌 /g, "");
     if (userInput != "") {
         search.src = "/search.php?s=" + encodeURIComponent(userInput);
-        setTimeout("$(search).fadeIn();", 500);
+        setTimeout(function(){
+            $(search).fadeIn();
+            var mql = window.matchMedia("(orientation: portrait)");
+            if(mql.matches) {
+                offset = window.screen.height * 0.5 - 229.4
+                $('html, body').animate({  
+                    scrollTop: $("#search").offset().top - offset
+                }, 2000);  
+            }
+            setTimeout(function(){
+                $(window).scroll(scrollHandlerSearch);
+            }, 3000);
+          }, 500);
     }
+}
+
+var scrollHandlerPlaylist = function(){
+    playlistScroll = $(playlist_search).fadeOut();
+    $(window).off("scroll", scrollHandlerPlaylist);
 }
 
 function checkPlaylist() {
@@ -45,7 +68,19 @@ function checkPlaylist() {
     playlistInput = playlistInput.replace(/歌单 /g, "");
     if (playlistInput != "") {
         playlist_search.src = "/playlist.php?s=" + encodeURIComponent(playlistInput);
-        setTimeout("$(playlist_search).fadeIn();", 500);
+        setTimeout(function(){
+            $(playlist_search).fadeIn();
+            var mql = window.matchMedia("(orientation: portrait)");
+            if(mql.matches) {
+                offset = window.screen.height * 0.5 - 609.4
+                $('html, body').animate({  
+                    scrollTop: $("#playlist").offset().top - offset
+                }, 2000);  
+            }
+            setTimeout(function(){
+                $(window).scroll(scrollHandlerPlaylist);
+            }, 3000);
+          }, 500);
     }
 }
 
@@ -65,9 +100,13 @@ function setPause() {
 function checkElement(event) {
     if (event.target != search && event.target != opensearch) {
         $(search).fadeOut();
+        $(window).off("scroll", scrollHandlerSearch);
+        $(window).off("scroll", scrollHandlerPlaylist);
     }
     if (event.target != playlist_search && event.target != openplaylist) {
         $(playlist_search).fadeOut();
+        $(window).off("scroll", scrollHandlerSearch);
+        $(window).off("scroll", scrollHandlerPlaylist);
     }
 }
 
@@ -193,10 +232,8 @@ function sendmsg() {
     };
     websocket.send(JSON.stringify(wait_send));
     msginput.value = "";
-    msginput.disabled = true;
     sendmsgbtn.disabled = true;
     setTimeout(function() {
-        msginput.disabled = false;
         sendmsgbtn.disabled = false;
         //$(msginput).focus();
     }, 100);
@@ -299,7 +336,7 @@ document.onreadystatechange = function() {
 }
 
 var options = {
-    strings: ["点歌 认真的雪", "设置昵称 Holger", "投票切歌", "歌单 5436660157", "这首歌超好听~"],
+    strings: ["点歌 认真的雪", "设置昵称 Holger", "投票切歌", "输入歌单ID（ 5436660157）后点击“歌单”打开播放列表", "这首歌超好听~", "输入歌曲名后点击“搜索”来查找歌曲"],
     typeSpeed: 100,
     backSpeed: 50,
     shuffle: true,

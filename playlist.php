@@ -45,6 +45,13 @@ function getAlbums($data)
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/materialize-css@1.0.0/dist/css/materialize.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/static/css/style.css" />
+	<link id="dark-theme" rel="stylesheet" href="/static/css/night.css" media="(prefers-color-scheme: dark)"
+		data-original-media="(prefers-color-scheme: dark)" />
+	<link id="daily-theme" rel="stylesheet" href="/static/css/style.css"
+		media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
+		data-original-media="(prefers-color-scheme: no-preference), (prefers-color-scheme: light)" />
+	<script async src="/static/js/theme_auto.js"></script>
 	<style>
 		.table tr {
 			font-size: 14px;
@@ -64,7 +71,7 @@ function getAlbums($data)
 
 <body style="display: none; text-align: center">
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.min.js"></script>
-	<button onclick="window.parent.$(window.parent.playlist_search).fadeOut();" class="btn btn-primary">退出</button>
+	<button onclick="window.parent.$(window.parent.playlist_search).fadeOut();window.parent.$(window).off('scroll', scrollHandlerPlaylist);" class="btn btn-primary">退出</button>
 	<table class="table" id="musicList">
 		<tr>
 			<th>歌名</th>
@@ -98,6 +105,7 @@ function getAlbums($data)
 				actionTextColor: '#fff',
 				onActionClick: function (e) {
 					$(playlist_search).fadeOut();
+					$(window).off("scroll", scrollHandlerPlaylist);
 					//$(msginput).focus();
 				},
 			})

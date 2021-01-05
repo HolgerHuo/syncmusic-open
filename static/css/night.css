@@ -1,0 +1,68 @@
+#slide-out{
+    background: #121212 !important;
+}
+
+.sidenav li>a {
+    color: rgba(255,255,255,.88) !important;
+}
+
+.sidenav .subheader {
+    color: rgba(230, 230, 230, 0.88) !important;
+    /**font-size: smaller !important;**/
+}
+
+
+h1,h2,h3,h4,h5,h6,body,.sysmsg,#musiclrc,p,#musicname,th,td{
+    color:rgba(255,255,255,.88) !important;
+}
+
+
+.name, .logo-text, .email, .material-icons,.fa {
+    color: rgba(255,255,255,.88) !important;
+}
+
+.nav-wrapper.teal {
+    background:#121212 !important;
+}
+
+img {
+    filter: brightness(.6);
+}
+
+.progress {
+    background: #303837 !important;
+}
+
+div#played {
+    background: #8c8c8c !important;
+}
+
+.full-width {
+    background:#121212 !important;
+}
+
+.full-width:hover {
+    background:rgb(95, 95, 95) !important;
+}
+
+.btn, .btn-small {
+    background: #121212;
+}
+
+.btn-small:hover {
+    background:rgb(128, 128, 128) !important;
+}
+
+::-webkit-scrollbar {
+    background: #121212;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(112, 112, 112);
+}
+
+iframe {
+    background: #121212;
+    border: 12px solid #121212;
+    box-shadow: 0px 0px 16px#121212;
+}

@@ -39,6 +39,13 @@ function getArtists($data)
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/materialize-css@1.0.0/dist/css/materialize.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/static/css/style.css" />
+	<link id="dark-theme" rel="stylesheet" href="/static/css/night.css" media="(prefers-color-scheme: dark)"
+		data-original-media="(prefers-color-scheme: dark)" />
+	<link id="daily-theme" rel="stylesheet" href="/static/css/style.css"
+		media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
+		data-original-media="(prefers-color-scheme: no-preference), (prefers-color-scheme: light)" />
+	<script async src="/static/js/theme_auto.js"></script>
 	<style>
 		.table tr {
 			font-size: 14px;
@@ -91,6 +98,7 @@ function getArtists($data)
 				actionTextColor: '#fff',
 			})
 			window.parent.$(window.parent.search).fadeOut();
+			window.parent.$(window).off("scroll", scrollHandlerSearch);
 			// window.parent.$(window.parent.msginput).focus();
 		} catch (e) {
 			// No

@@ -63,7 +63,7 @@ define("MUSIC_API", "https://cdn.zerodream.net/netease");
 define("PYTHON_EXEC", "/usr/bin/python3");
 
 // 客户端聊天冷却时间，单位秒
-define("MIN_CHATWAIT", 0.25);
+define("MIN_CHATWAIT", 0.001);
 
 // 聊天内容的最大长度
 define("MAX_CHATLENGTH", 200);
