@@ -5,10 +5,10 @@ importScripts("https://storage.googleapis.com/workbox-cdn/releases/".concat(work
     workbox.core.skipWaiting(),
     workbox.core.clientsClaim(),
     workbox.precaching.precacheAndRoute([
-        { revision: "njkfdbshk26748923hjksdvgs36843bh", url: "/index.html" },
-        { revision: "66646d5031b167545fbdbfd8d28ae3bf", url: "/static/css/style.css" },
+        { revision: "njkfdbshk2q7e89230jksdvgq31843bh", url: "/index.html" },
+        { revision: "66646d5031b167545fbdbfd8d78ae3bq", url: "/static/css/style.css" },
         { revision: "bd9588cf39d38517a31f1q8qqe470aff", url: "/static/css/night.css" },
-        { revision: "59323e91008ce69se66ce07371f6c74d", url: "/static/js/app.js" },
+        { revision: "59323d91008ce611e6ece0707qfqd84d", url: "/static/js/app.js" },
         { revision: "89e0f78ebc6426c8ca88ce0a5dc86a1a", url: "/static/js/theme_auto.js" },
         { revision: "7770c57744ed390f8fe9b61214d83b12", url: "/static/images/avatar.png" },
         { revision: "abbf7d07aac53217336f8bae8d789265", url: "/static/images/apple-touch-icon.png" },
